@@ -23,7 +23,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Base URL for uploaded evidence files
 export const FILE_BASE_URL = API_BASE_URL.replace(/\/api\/?$/, '');
 
 export default api;
