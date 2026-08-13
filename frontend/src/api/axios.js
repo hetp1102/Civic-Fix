@@ -1,16 +1,29 @@
 import axios from 'axios';
 
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'https://civic-fix-3ijr.onrender.com/api';
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL=https:'//civic-fix-3ijr.onrender.com/api',
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('civicfix_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('civicfix_token');
 
-// Base URL for statically-served evidence photos/videos (strip the trailing /api)
-export const FILE_BASE_URL = (process.env.REACT_APP_API_URL || 'http://localhost:5000/api').replace(/\/api\/?$/, '');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Base URL for uploaded evidence files
+export const FILE_BASE_URL = API_BASE_URL.replace(/\/api\/?$/, '');
 
 export default api;
