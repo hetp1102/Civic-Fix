@@ -1,26 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import GoogleSignInButton from '../components/GoogleSignInButton';
 
 export default function Home() {
   return (
     <div>
       {/* =========================
-          TOP NAVBAR
+          TOP BAR
           ========================= */}
       <div className="topbar">
         <div className="topbar-inner">
-          <Link
-            to="/"
-            className="brand"
-            style={{
-              textDecoration: 'none',
-              color: 'inherit',
-            }}
-          >
+          <div className="brand">
             <span className="brand-mark">C</span>
             CivicFix
-          </Link>
+          </div>
         </div>
       </div>
 
@@ -41,9 +33,8 @@ export default function Home() {
             gap: 48,
           }}
         >
-
           {/* =========================
-              LEFT SECTION
+              LEFT SIDE
               ========================= */}
           <div>
             <span
@@ -106,7 +97,7 @@ export default function Home() {
               {/* Google Login */}
               <GoogleSignInButton />
 
-              {/* Divider */}
+              {/* OR DIVIDER */}
               <div
                 style={{
                   display: 'flex',
@@ -141,9 +132,9 @@ export default function Home() {
                 />
               </div>
 
-              {/* Manual Login */}
-              <Link
-                to="/citizen/login"
+              {/* MANUAL LOGIN */}
+              <a
+                href="/citizen/login"
                 style={{
                   display: 'block',
                   width: '100%',
@@ -155,11 +146,10 @@ export default function Home() {
                   textAlign: 'center',
                   textDecoration: 'none',
                   fontWeight: 600,
-                  transition: 'opacity 0.2s ease',
                 }}
               >
                 Login with Email / User ID
-              </Link>
+              </a>
 
               <p
                 className="hint"
@@ -175,11 +165,10 @@ export default function Home() {
           </div>
 
           {/* =========================
-              RIGHT SECTION
+              RIGHT SIDE
               ========================= */}
           <div>
-
-            {/* Card 1 */}
+            {/* CARD 1 */}
             <div
               className="card"
               style={{
@@ -206,7 +195,7 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Card 2 */}
+            {/* CARD 2 */}
             <div
               className="card"
               style={{
@@ -233,7 +222,7 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Card 3 */}
+            {/* CARD 3 */}
             <div className="card">
               <h3
                 style={{
@@ -254,7 +243,6 @@ export default function Home() {
                 of the same issue are merged automatically.
               </p>
             </div>
-
           </div>
         </div>
       </div>
