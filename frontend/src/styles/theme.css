@@ -1,0 +1,298 @@
+/*
+  Design plan — "CivicFix"
+  Subject: a municipal grievance ticketing system. The world it lives in is
+  civic infrastructure — road signage, survey stakes, utility tags, ticket
+  stubs handed back at a counter window.
+
+  Palette:
+    --ink        #123B36  deep teal-navy, the "official document" color
+    --paper      #F1F3EE  cool paper, not the templated warm cream
+    --paper-raised #FFFFFF
+    --signal     #E8A33D  hazard/marigold amber — CTAs, the color of caution
+                           signage, tying directly to "pothole" style hazards
+    --urgent     #C1440E  brick/rust red — high priority, rejected
+    --resolved   #3F7D57  sage green — resolved status
+    --line       #D8DDD3  hairline borders on paper
+
+  Type:
+    Display / structural: 'Space Grotesk' — technical, drafting-table feel
+    Body: 'IBM Plex Sans' — the humanist grotesk many gov't digital services
+          use; legible at small sizes, quietly official
+    Mono (tracking IDs, coordinates, timestamps): 'IBM Plex Mono'
+
+  Layout concept: content sits on "paper" cards with a punched ticket-stub
+  treatment for tracking IDs (perforated edge + monospace code), echoing the
+  physical receipt a citizen would get at a government counter — this is the
+  signature element, used ONLY for tracking ids/status, not decoration
+  elsewhere.
+*/
+
+:root {
+  --ink: #123b36;
+  --ink-soft: #3a5852;
+  --paper: #f1f3ee;
+  --paper-raised: #ffffff;
+  --signal: #e8a33d;
+  --signal-ink: #5c3d0f;
+  --urgent: #c1440e;
+  --resolved: #3f7d57;
+  --progress: #2f6f8f;
+  --line: #d8ddd3;
+  --line-strong: #b9c2b2;
+  --shadow: 0 1px 2px rgba(18, 59, 54, 0.06), 0 8px 24px rgba(18, 59, 54, 0.06);
+
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  margin: 0 0 0.4em;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+a {
+  color: var(--progress);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: transform 0.06s ease, box-shadow 0.15s ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-primary {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+.btn-primary:hover {
+  box-shadow: var(--shadow);
+}
+.btn-outline {
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-soft);
+}
+.btn-danger {
+  background: var(--urgent);
+  color: #fff;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-block {
+  width: 100%;
+}
+
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink-soft);
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--progress);
+}
+.hint {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+.error-text {
+  color: var(--urgent);
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+/* Ticket-stub tracking id — the signature element */
+.ticket {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  background: var(--ink);
+  color: #f1f3ee;
+  padding: 8px 14px;
+  border-radius: 4px;
+  position: relative;
+  letter-spacing: 0.02em;
+}
+.ticket::before,
+.ticket::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--paper);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ticket::before {
+  left: -5px;
+}
+.ticket::after {
+  right: -5px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.badge-submitted { background: #e6e9e2; color: var(--ink-soft); }
+.badge-under_review { background: #e9e2f5; color: #5b3d99; }
+.badge-assigned { background: #dcebf2; color: var(--progress); }
+.badge-in_progress { background: #fdecd2; color: var(--signal-ink); }
+.badge-resolved { background: #dcf0e3; color: var(--resolved); }
+.badge-rejected { background: #f7dcd3; color: var(--urgent); }
+.badge-duplicate { background: #eee; color: #777; }
+
+.topbar {
+  background: var(--paper-raised);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.topbar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--signal);
+  display: grid;
+  place-items: center;
+  color: var(--signal-ink);
+  font-weight: 700;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 720px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-soft);
+}
